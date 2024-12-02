@@ -11,6 +11,28 @@
                 ],
                 "summary": "Buscar categorias",
                 "description": "Este endpoint é usado para buscar todos as categorias cadastrados no sistema.",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Informa a página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Informa a quantidade de registros por página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 100
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Listagem de categorias encontrada com sucesso.",
@@ -172,6 +194,28 @@
                 ],
                 "summary": "Buscar produtos",
                 "description": "Este endpoint é usado para buscar todos os produtos cadastrados no sistema.",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Informa a página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Informa a quantidade de registros por página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 100
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Listagem de produtos encontrada com sucesso.",
@@ -336,6 +380,28 @@
                 ],
                 "summary": "Buscar clientes",
                 "description": "Este endpoint é usado para buscar todos os clientes cadastrados no sistema.",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Informa a página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Informa a quantidade de registros por página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 100
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Listagem de clientes encontrada com sucesso.",
@@ -539,6 +605,28 @@
                 ],
                 "summary": "Buscar pedidos",
                 "description": "Este endpoint é usado para buscar todos os pedidos cadastrados no sistema.",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Informa a página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Informa a quantidade de registros por página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 100
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Listagem de pedidos encontrada com sucesso.",
@@ -728,6 +816,42 @@
                 }
             }
         },
+        "/api/order/webhook": {
+            "post": {
+                "tags": [
+                    "Pedidos"
+                ],
+                "summary": "Atualizar o status do pedido para 'Pago' utilizando o ID",
+                "description": "Este endpoint é usado para alterar o status para 'Pago' de um pedido existente pelo seu ID.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "ID único do pedido.",
+                                        "example": "PROD_1"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Status alterado com sucesso."
+                    },
+                    "400": {
+                        "$ref": "#/definitions/Response400"
+                    },
+                    "404": {
+                        "$ref": "#/definitions/Response404"
+                    }
+                }
+            }
+        },
         "/api/order/status/{id}": {
             "post": {
                 "tags": [
@@ -757,56 +881,7 @@
                                     "status": {
                                         "type": "string",
                                         "description": "Status do pedido.",
-                                        "example": "READY"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "204": {
-                        "description": "Status alterado com sucesso."
-                    },
-                    "400": {
-                        "$ref": "#/definitions/Response400"
-                    },
-                    "404": {
-                        "$ref": "#/definitions/Response404"
-                    }
-                }
-            }
-        },
-        "/api/order/webhook": {
-            "post": {
-                "tags": [
-                    "Pedidos"
-                ],
-                "summary": "Atualizar o status do pedido para 'Pago' utilizando o ID",
-                "description": "Este endpoint é usado para alterar o status para 'Pago' de um pedido existente pelo seu ID.",
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "description": "ID único do pedido."
-                        },
-                        "description": "ID do pedido a alterar status."
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "status": {
-                                        "type": "string",
-                                        "description": "Status do pedido.",
-                                        "example": "READY"
+                                        "example": "IN_PREPARATION"
                                     }
                                 }
                             }
@@ -926,6 +1001,12 @@
                     "type": "string",
                     "format": "date-time",
                     "description": "Data e hora da última atualização do produto."
+                },
+                "deleted_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Data e hora que o produto foi deletado.",
+                    "nullable": true
                 }
             }
         },
@@ -953,6 +1034,12 @@
                     "type": "string",
                     "format": "date-time",
                     "description": "Data e hora da última atualização da categoria."
+                },
+                "deleted_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Data e hora que o produto foi deletado.",
+                    "nullable": true
                 }
             }
         },
@@ -984,6 +1071,12 @@
                     "type": "string",
                     "format": "date-time",
                     "description": "Data e hora da última atualização do cliente."
+                },
+                "deleted_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Data e hora que o produto foi deletado.",
+                    "nullable": true
                 }
             }
         },
@@ -1017,7 +1110,7 @@
                         "$ref": "#/definitions/Item"
                     }
                 },
-                "status_histories": {
+                "status_history": {
                     "$ref": "#/definitions/HistorioStatus"
                 },
                 "created_at": {
@@ -1029,6 +1122,12 @@
                     "type": "string",
                     "format": "date-time",
                     "description": "Data e hora da última atualização do pedido."
+                },
+                "deleted_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Data e hora que o produto foi deletado.",
+                    "nullable": true
                 }
             }
         },
@@ -1066,6 +1165,12 @@
                     "type": "string",
                     "format": "date-time",
                     "description": "Data e hora da última atualização do pedido."
+                },
+                "deleted_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Data e hora que o produto foi deletado.",
+                    "nullable": true
                 }
             }
         },
@@ -1093,6 +1198,12 @@
                     "type": "string",
                     "format": "date-time",
                     "description": "Data e hora da última atualização do historico."
+                },
+                "deleted_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Data e hora que o produto foi deletado.",
+                    "nullable": true
                 }
             }
         },
